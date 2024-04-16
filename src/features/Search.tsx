@@ -3,12 +3,14 @@ import { JournalCard } from "../components/JournalCard"
 import { getSherpaData } from "../api/getSherpaData"
 import { useDebounce } from "../hooks/useDebounce"
 import { SherpaParamsType, SherpaPublicationDataType } from "../api/sherpaTypes"
+import { JournalCardSkeleton } from "../components/JournalCardSkeleton"
 
 export function Search() {
-  const DEFAULT_QUERY_LIMIT = 30
+  const DEFAULT_QUERY_LIMIT = 20
 
   const [journals, setJournals] = useState<SherpaPublicationDataType[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [query, setQuery] = useState("")
   const queryOffset = useRef(0)
   const queryLimit = useRef(DEFAULT_QUERY_LIMIT)
@@ -19,10 +21,12 @@ export function Search() {
       const observer = new IntersectionObserver((entries, observer) => {
         if (entries[0].isIntersecting) {
           queryOffset.current = queryOffset.current + queryLimit.current
+          setIsLoadingMore(true)
           getSherpaData(
             (res) => {
               setJournals((current) => [...current, ...res.data.items])
               setIsLoading(false)
+              setIsLoadingMore(false)
             },
             {
               filter: query ? `[["title", "contains word", "${query}*"]]` : "",
@@ -96,6 +100,10 @@ export function Search() {
                   />
                 )
               })}
+        {isLoadingMore &&
+          Array.from({ length: DEFAULT_QUERY_LIMIT }, (_, index) => index).map(
+            (n) => <JournalCardSkeleton key={n} />
+          )}
       </section>
     </>
   )
