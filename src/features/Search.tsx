@@ -87,19 +87,24 @@ export function Search() {
         />
       </section>
       <section className="m-1 grid grid-cols-1 gap-1 md:grid-cols-2 lg:grid-cols-4">
-        {isLoading
-          ? "Loading..."
-          : journals.length === 0
-            ? "No results found"
-            : journals.map((journal, index) => {
-                return (
-                  <JournalCard
-                    key={journal.id}
-                    {...journal}
-                    ref={index === journals.length - 1 ? cardRef : undefined}
-                  />
-                )
-              })}
+        {isLoading ? (
+          <div className="animate-pulse text-center">
+            <div className="animate-bounce">⦿ </div>
+            <span>Loading...</span>
+          </div>
+        ) : journals.length === 0 ? (
+          "No results found"
+        ) : (
+          journals.map((journal, index) => {
+            return (
+              <JournalCard
+                key={journal.id}
+                {...journal}
+                ref={index === journals.length - 1 ? cardRef : undefined}
+              />
+            )
+          })
+        )}
         {isLoadingMore &&
           Array.from({ length: DEFAULT_QUERY_LIMIT }, (_, index) => index).map(
             (n) => <JournalCardSkeleton key={n} />
