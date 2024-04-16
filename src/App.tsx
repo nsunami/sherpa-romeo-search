@@ -1,5 +1,5 @@
-import "./app.css"
 import { Search } from "./features/Search"
+import "./styles.css"
 
 function App() {
   return (
