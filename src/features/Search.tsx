@@ -12,29 +12,32 @@ export function Search() {
   const [query, setQuery] = useState("")
   const queryOffset = useRef(0)
   const queryLimit = useRef(DEFAULT_QUERY_LIMIT)
-  const cardRef = useCallback((card: HTMLDivElement) => {
-    if (card == null || queryOffset.current == null) return
+  const cardRef = useCallback(
+    (card: HTMLDivElement) => {
+      if (card == null || queryOffset.current == null) return
 
-    const observer = new IntersectionObserver((entries, observer) => {
-      if (entries[0].isIntersecting) {
-        queryOffset.current = queryOffset.current + queryLimit.current
-        getSherpaData(
-          (res) => {
-            setJournals((current) => [...current, ...res.data.items])
-            setIsLoading(false)
-          },
-          {
-            filter: query ? `[["title", "contains word", "${query}*"]]` : "",
-            offset: queryOffset.current,
-            limit: queryLimit.current,
-          } as SherpaParamsType
-        )
-        observer.unobserve(card)
-      }
-    })
+      const observer = new IntersectionObserver((entries, observer) => {
+        if (entries[0].isIntersecting) {
+          queryOffset.current = queryOffset.current + queryLimit.current
+          getSherpaData(
+            (res) => {
+              setJournals((current) => [...current, ...res.data.items])
+              setIsLoading(false)
+            },
+            {
+              filter: query ? `[["title", "contains word", "${query}*"]]` : "",
+              offset: queryOffset.current,
+              limit: queryLimit.current,
+            } as SherpaParamsType
+          )
+          observer.unobserve(card)
+        }
+      })
 
-    observer.observe(card)
-  }, [])
+      observer.observe(card)
+    },
+    [query]
+  )
 
   useEffect(() => {
     setIsLoading(true)
