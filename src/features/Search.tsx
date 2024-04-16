@@ -86,7 +86,7 @@ export function Search() {
           onChange={(e) => setQuery(e.target.value)}
         />
       </section>
-      <section className="m-1 grid gap-1 md:grid-cols-2 lg:grid-cols-4">
+      <section className="m-1 grid grid-cols-1 gap-1 md:grid-cols-2 lg:grid-cols-4">
         {isLoading
           ? "Loading..."
           : journals.length === 0
