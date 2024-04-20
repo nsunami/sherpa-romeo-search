@@ -1,6 +1,20 @@
 import axios, { AxiosResponse } from "axios"
 import { SherpaParamsType } from "./sherpaTypes"
 
+const PUBLICATION_FILTERS = {
+  issn: "issn",
+  publisher_id: "publisher_id",
+  title_acronym: "title_acronym",
+  acronym: "acronym",
+  date_modified: "date_modified",
+  type: "type",
+  id: "id",
+  publisher_policy_id: "publisher_policy_id",
+  title: "title",
+  title_title: "title_title",
+  publicationid: "publicationid",
+}
+
 export function getSherpaData(
   callback: (res: AxiosResponse) => void,
   params?: SherpaParamsType,
@@ -10,8 +24,8 @@ export function getSherpaData(
   const issnMatch = query ? query.match(ISSN_PATTERN) : ""
   const currentFilter = query
     ? issnMatch
-      ? `[["issn", "equals", "${issnMatch[0]}"]]`
-      : `[["title", "contains word", "${query}*"]]`
+      ? `[["${PUBLICATION_FILTERS.issn}", "equals", "${issnMatch[0]}"]]`
+      : `[["${PUBLICATION_FILTERS.title}", "contains word", "${query}*"]]`
     : ""
   const controller = new AbortController()
   axios
