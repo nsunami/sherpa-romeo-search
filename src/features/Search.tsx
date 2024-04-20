@@ -7,12 +7,13 @@ import { JournalCardSkeleton } from "../components/JournalCardSkeleton"
 
 export function Search() {
   const DEFAULT_QUERY_LIMIT = 20
+  const DEFAULT_QUERY_OFFSET = 0
 
   const [journals, setJournals] = useState<SherpaPublicationDataType[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [query, setQuery] = useState("")
-  const queryOffset = useRef(0)
+  const queryOffset = useRef(DEFAULT_QUERY_OFFSET)
   const queryLimit = useRef(DEFAULT_QUERY_LIMIT)
 
   const cardRef = useCallback(
@@ -51,7 +52,10 @@ export function Search() {
         setJournals(res.data.items)
         setIsLoading(false)
       },
-      { limit: DEFAULT_QUERY_LIMIT } as SherpaParamsType
+      {
+        offset: queryOffset.current,
+        limit: DEFAULT_QUERY_LIMIT,
+      } as SherpaParamsType
     )
   }, [])
 
