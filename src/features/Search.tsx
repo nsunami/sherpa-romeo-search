@@ -14,6 +14,7 @@ export function Search() {
   const [query, setQuery] = useState("")
   const queryOffset = useRef(0)
   const queryLimit = useRef(DEFAULT_QUERY_LIMIT)
+
   const cardRef = useCallback(
     (card: HTMLDivElement) => {
       if (card == null || queryOffset.current == null) return
@@ -29,10 +30,10 @@ export function Search() {
               setIsLoadingMore(false)
             },
             {
-              filter: query ? `[["title", "contains word", "${query}*"]]` : "",
               offset: queryOffset.current,
               limit: queryLimit.current,
-            } as SherpaParamsType
+            } as SherpaParamsType,
+            query
           )
           observer.unobserve(card)
         }
@@ -50,7 +51,7 @@ export function Search() {
         setJournals(res.data.items)
         setIsLoading(false)
       },
-      { limit: 30 } as SherpaParamsType
+      { limit: DEFAULT_QUERY_LIMIT } as SherpaParamsType
     )
   }, [])
 
@@ -63,9 +64,9 @@ export function Search() {
           setIsLoading(false)
         },
         {
-          limit: 30,
-          filter: query ? `[["title", "contains word", "${query}*"]]` : "",
-        } as SherpaParamsType
+          limit: DEFAULT_QUERY_LIMIT,
+        } as SherpaParamsType,
+        query
       )
     },
     500,
