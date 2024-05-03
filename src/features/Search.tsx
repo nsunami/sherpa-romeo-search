@@ -91,29 +91,64 @@ export function Search() {
           onChange={(e) => setQuery(e.target.value)}
         />
       </section>
-      <section className="m-1 grid grid-cols-1 gap-1 md:grid-cols-2 lg:grid-cols-4">
+      <section className="m-1">
         {isLoading ? (
-          <div className="animate-pulse text-center">
-            <div className="animate-bounce">⦿ </div>
-            <span>Loading...</span>
+          <div className="text-center">
+            <p>
+              <a
+                className="text-xs "
+                href="https://giphy.com/gifs/chubbiverse-chubbicorns-chubbicorn-chubbifrens-PPgZCwZPKrLcw75EG1"
+              >
+                via GIPHY
+              </a>
+            </p>
+            <iframe
+              src="https://giphy.com/embed/PPgZCwZPKrLcw75EG1"
+              width="480"
+              height="270"
+              className="giphy-embed"
+              allowFullScreen
+            ></iframe>
+            <span className="animate-pulse text-5xl">Loading...</span>
           </div>
         ) : journals.length === 0 ? (
-          "No results found"
+          <div className="text-center">
+            <p>
+              <a
+                className="text-xs "
+                href="https://giphy.com/gifs/originals-crickets-l2QZXWjNkWvgx569i"
+              >
+                via GIPHY
+              </a>
+            </p>
+            <iframe
+              src="https://giphy.com/embed/l2QZXWjNkWvgx569i"
+              width="480"
+              height="270"
+              className="giphy-embed"
+              allowFullScreen
+            ></iframe>
+
+            <span className="text-5xl">No results found</span>
+          </div>
         ) : (
-          journals.map((journal, index) => {
-            return (
-              <JournalCard
-                key={journal.id}
-                {...journal}
-                ref={index === journals.length - 1 ? cardRef : undefined}
-              />
-            )
-          })
+          <div className="grid grid-cols-1 gap-1 md:grid-cols-2 lg:grid-cols-4">
+            {journals.map((journal, index) => {
+              return (
+                <JournalCard
+                  key={journal.id}
+                  {...journal}
+                  ref={index === journals.length - 1 ? cardRef : undefined}
+                />
+              )
+            })}
+            {isLoadingMore &&
+              Array.from(
+                { length: DEFAULT_QUERY_LIMIT },
+                (_, index) => index
+              ).map((n) => <JournalCardSkeleton key={n} />)}
+          </div>
         )}
-        {isLoadingMore &&
-          Array.from({ length: DEFAULT_QUERY_LIMIT }, (_, index) => index).map(
-            (n) => <JournalCardSkeleton key={n} />
-          )}
       </section>
     </>
   )
