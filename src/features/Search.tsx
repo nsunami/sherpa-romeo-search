@@ -10,7 +10,7 @@ export function Search() {
   const DEFAULT_QUERY_OFFSET = 0
 
   const [journals, setJournals] = useState<SherpaPublicationDataType[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [query, setQuery] = useState("")
   const queryOffset = useRef(DEFAULT_QUERY_OFFSET)
