@@ -4,4 +4,4 @@
 
 I'm just playing with Vite with Sherpa Romeo API.
 
-Test App Available at: https://luminous-hamster-55cd61.netlify.app/
+Test App Available at: https://sherpa-romeo-search.netlify.app
