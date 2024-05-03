@@ -1,5 +1,15 @@
-import { Fragment, Ref, forwardRef, useMemo, useRef } from "react"
+import {
+  Fragment,
+  Ref,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { SherpaPublicationDataType } from "../api/sherpaTypes"
+import getApcData from "../api/getApcData"
+import { toEuro } from "../utils/toEuro"
 
 export function JournalCardInner(
   {
@@ -14,6 +24,7 @@ export function JournalCardInner(
   ref: Ref<HTMLDivElement>
 ) {
   const firstTitle = useRef(title[0]?.title)
+  const [averageApc, setAverageApc] = useState()
 
   const oaPermitted = useMemo(
     () => [
@@ -27,6 +38,14 @@ export function JournalCardInner(
     ],
     [publisher_policy]
   )
+
+  useEffect(() => {
+    getApcData(issns[0]).then((data) => {
+      if (data.total_cell_count === 0) return
+      setAverageApc(data.summary.apc_amount_avg)
+    })
+  }, [])
+
   return (
     <div
       ref={ref}
@@ -61,7 +80,23 @@ export function JournalCardInner(
         <div className="my-1 border-t-2"></div>
       </div>
       <div data-card-body className="flex-grow">
-        <div data-publisher-policy className="text-gray-500">
+        <div>
+          <span className="text-gray-500">APC:</span>{" "}
+          {averageApc ? (
+            <a
+              href="https://treemaps.openapc.net/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {toEuro(averageApc)}
+              <span className="text-sm text-gray-500"> (average)</span>
+            </a>
+          ) : (
+            <span className="text-gray-500">---</span>
+          )}
+        </div>
+
+        <div data-publisher-policy className="mt-2 text-gray-500">
           Open Access possible with:
           <ul className="list-none text-gray-800">
             {oaPermitted.map((i, index) => (
