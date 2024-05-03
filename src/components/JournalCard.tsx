@@ -77,7 +77,7 @@ export function JournalCardInner(
               </li>
             ))}
           </ul>
-          <div className="overflow-hidden text-ellipsis text-nowrap text-sm text-gray-500">
+          <div className="mt-2 overflow-hidden text-ellipsis text-nowrap text-sm text-gray-500">
             Policies:{" "}
             {publisher_policy.map((policy) => {
               return (
